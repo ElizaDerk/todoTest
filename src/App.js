@@ -126,7 +126,7 @@ function App() {
                     <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', padding: '20px', borderRadius: '5px', width: '450px' }}>
                         <div style={{wordBreak: 'break-all'}}>
                             <h2>{selectedTask.title}</h2>
-                            <p>Description:</p>
+                            <h2>Description:</h2>
                             <p>{selectedTask.description}</p>
                             <label>Status:</label>
                             <input type="checkbox" checked={selectedTask.completed} onChange={() => setSelectedTask({...selectedTask, completed: !selectedTask.completed})} />

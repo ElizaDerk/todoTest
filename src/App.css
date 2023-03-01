@@ -18,6 +18,10 @@ input{
     border: 1px solid red;
 }
 
+h2{
+    font-weight: bold;
+}
+
 
 table{
     width: 975px;
