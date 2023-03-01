@@ -1,36 +1,38 @@
 import './App.css';
 import {useState} from "react";
-import React from "react";
 
 function App() {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState('');
-
-    const [titleError, setTitleError] = useState(false);
-    const [descriptionError, setDescriptionError] = useState(false);
-
     const [description, setDescription] = useState('');
-    const [showModal, setShowModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
+
+    const [formErrors, setFormErrors] = useState({
+        title: false,
+        description: false,
+    });
+
+    const [showModal, setShowModal] = useState(false);
+
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
-        setTitleError(false);
+        setFormErrors({ ...formErrors, title: !event.target.value });
     };
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
-        setDescriptionError(false);
+        setFormErrors({ ...formErrors, description: !event.target.value });
     };
 
     const handleTaskCreate = (e) => {
         e.preventDefault();
         if (!title) {
-            setTitleError(true);
+            setFormErrors({ ...formErrors, title: true });
             return;
         }
         if (!description) {
-            setDescriptionError(true);
+            setFormErrors({ ...formErrors, description: true });
             return;
         }
         const newTask = {
@@ -83,12 +85,13 @@ function App() {
             <div className="form">
                 <div>
                     <label htmlFor="title-input">Title:</label>
-                    <input type="text" id="title-input" value={title} onChange={handleTitleChange}/>
-                    {titleError && <span style={{color: 'red'}}>This field is empty</span>}
-
+                    <input type="text" id="title-input" value={title} onChange={handleTitleChange} className={formErrors.title ? 'error' : ''} />
+                    {formErrors.title && <span style={{color: 'red'}}>This field is empty</span>}
+                </div>
+                <div>
                     <label htmlFor="description-input">Description:</label>
-                    <input type="text" id="description-input" value={description} onChange={handleDescriptionChange}/>
-                    {descriptionError && <span style={{color: 'red'}}>This field is empty</span>}
+                    <input type="text" id="description-input" value={description} onChange={handleDescriptionChange} className={formErrors.description ? 'error' : ''} />
+                    {formErrors.description && <span style={{color: 'red'}}>This field is empty</span>}
                 </div>
                 <button onClick={handleTaskCreate}>Create</button>
             </div>
@@ -103,15 +106,14 @@ function App() {
                 </thead>
                 <tbody>
                 {tasks.map((task) => (
-                    <tr key={task.id}  onClick={() => handleTaskSelect(task.id)}>
+                    <tr key={task.id}>
                         <td>{task.id}</td>
-                        <td>{task.title}</td>
-                        <td>{task.description}</td>
+                        <td onClick={() => handleTaskSelect(task.id)}>{task.title.length > 30 ? `${task.title.substring(0, 30)}...` : task.title}</td>
+                        <td onClick={() => handleTaskSelect(task.id)}>{task.description.length > 50 ? `${task.description.substring(0, 50)}...` : task.description}</td>
                         <td>
                             <input type="checkbox"
                                    checked={task.completed}
                                    onChange={() => handleTaskStatusChange(task.id)}
-                                   disabled
                             />
                         </td>
 
@@ -122,7 +124,7 @@ function App() {
             {showModal && (
                 <div style={{ position: 'fixed', top: 0, left: 0, bottom: 0, right: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
                     <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', padding: '20px', borderRadius: '5px', width: '450px' }}>
-                        <div>
+                        <div style={{wordBreak: 'break-all'}}>
                             <h2>{selectedTask.title}</h2>
                             <p>Description:</p>
                             <p>{selectedTask.description}</p>

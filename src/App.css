@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+}
+
 body{
     background: lightgray;
 }
@@ -10,18 +14,23 @@ input{
     margin-right: 30px;
 }
 
+.error {
+    border: 1px solid red;
+}
+
+
 table{
     width: 975px;
 }
 
 th {
-    width: 150px;
+
     text-align: left;
     color: #fff;
     background-color: #706d97;
 }
 td {
-    min-width: 250px;
+
     color: #000;
     border-bottom: 1px solid #eee;
 }
@@ -29,16 +38,12 @@ th, td {
     padding: 10px;
     height: 20px;
 }
-td:first-child {
-    width: 150px;
-    min-width: 0;
-}
+
 th:last-child {
     text-align: right;
 }
 td:last-child {
-    width: 80px;
-    min-width: 0;
+
     text-align: right;
 }
 tr:nth-child(odd) {
